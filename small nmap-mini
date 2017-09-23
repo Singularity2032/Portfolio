@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#DrkMtter
+#UAT
+
+
+selection= 
+until [ "$selection" = "0" ]; do
+
+ echo ""
+    echo "PROGRAM MENU"
+    echo "Remember to exit the program!"
+    echo ""
+    echo ""
+    echo "2 - run script"
+    echo ""
+    echo "0 - exit program"
+    echo ""
+    echo -n "Enter selection: "
+    read selection
+    echo ""
+    case $selection in
+        1 ) exit ;;
+        2 ) 
+
+echo "Start: "
+read tip1
+
+echo "End: "
+read tip2
+
+echo "Save As: "
+read filename
+sudo nmap -oG $filename -sS  10.10.160.$tip1-$tip2 | sort -u | grep "Dicovered open port" | awk {'print $6": "$4'} | awk -F/ {'print $1'} > $filename ;;
+        0 ) exit ;;
+        * ) echo "Please enter 1, 2, or 0"
+    esac
+done
+exit;; 
