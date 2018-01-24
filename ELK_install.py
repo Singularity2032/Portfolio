@@ -1,3 +1,4 @@
+#/bin/sh
 ######################################
 ##Amari Matthews
 ## Script to download and install the ENTIRE ELK stack
@@ -8,14 +9,21 @@
 ##
 ######################################
 import os
+import pwd
 
 #Top Stack Variables
 
 Elk_Address = ""
 cluster_name = ""
 
-
-
+#Get userid
+def get_user_id():
+    pwd.getpwuid( os.getuid() ).pw_uid = userid
+    if (userid != 0 ):
+        print "\n Please run as root."
+        exit 1
+    else:
+        print "\n Installing Java Requirements"
 
 #Seeing if proper version of java is installed
 def install_java_requirements():
@@ -25,6 +33,7 @@ def install_java_requirements():
     os.system("sudo apt-get update")
     os.system("sudo apt-get install openjdk-7-jre")
     print "\n[STATUS] Updating SYSTEM"
+
 #Updating the system
 def system_update():
     os.system("sudo apt-get update")
