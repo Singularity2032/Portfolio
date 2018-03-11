@@ -10,7 +10,6 @@
 ######################################
 import os
 import http
-import pwd
 import sys
 #Top Stack Variables
 
@@ -55,8 +54,9 @@ def system_update():
 #Install Elasticsearch
 def install_elasticsearch():
     print(*"\nDATA: Dowloading key for ELASTICSEARCH.......")
+    #Downloading the packages and gpg keys to install the elasticsearch configuration.
     os.system("wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -")
-    os.system("echo "deb - http://packages.elastic.co/elasticsearch/2.x/debian stable main")
+    os.system("deb - http://packages.elastic.co/elasticsearch/2.x/debian stable main")
     os.system("sudo tee -a /etc/apt/sources.list.d/Elasticsearch-2/x.list")
     os.system("sudo apt-get update")
     os.system("sudo apt-get install elastic search")
@@ -109,26 +109,34 @@ def configure_ElasticSearch():
 
 #Install of Kibana
 def install_Kibana():
+    #Installing Kibanna
     os.system("sudo apt-get install kibana")
 
 #Configure Kibanna
 def configure_Kibana():
+    #Opening the Kibanna Configurattion
     with open("/etc/kibana/kibana.yml", "rt") as kibanaConfig:
+        #Creating a new file with a new name to copy to
         with open("/etc/kibanna/kibanna.yml.new", "w")as newKibannaConf:
             for line in kibanaConfig:
+                #If the server name is not in the configuration file print that there is an error
                 if "server.host:" in line == False:
                     print("\n[ERROR] Can't properly edit Kibanna config")
-                    else:
-                        newKibannaConf.write("server.host: "localhost" " + line.strip())
-                        
+                    #Still write in the service host name the localhost name
+                else:
+                    newKibannaConf.write("server.host: " + localhost + line.strip())
+#Remove the old configuration file                        
 os.system("sudo rm -f /etc/kibana/kibana.yml")
+#Rename the new one to replace the old one
 os.system("sudo cp /etc/kibana/kibana.yml.new /etc/kibana/kibana.yml")
+#Now remove the previously copied version
 os.system("sudo rm -f /etc/kibana/kibana.yml.new")
 
 print("\n[STATUS]Starting ElasticSearch as a service")
 
 #Installing Kibana as a service
 def kibanna_Service():
+    #Restart the Kibana service to run on the proper confiuration file and display the port so the user can navigate to the right port.
     os.system("sudo systemctl restart kibana")
     os.system("sudo systemctl enable kibana")
     os.system("sudo systemctl status kibana")
