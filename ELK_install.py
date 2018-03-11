@@ -20,27 +20,26 @@ cluster_name = ""
 def get_user_id():
     pwd.getpwuid( os.getuid() ).pw_uid = userid
     if (userid != 0 ):
-        print "\n Please run as root."
-        exit 1
+        print ("\n Please run as root.")
     else:
-        print "\n Installing Java Requirements"
+        print("\n Installing Java Requirements")
 
 #Seeing if proper version of java is installed
 def install_java_requirements():
-    print "\n Lookin for the latest version of Java."
-    print "\n The dashboard depends on it!"
+    print("\n Lookin for the latest version of Java.")
+    print ("\n The dashboard depends on it!")
     os.system("sudo java -v")
     os.system("sudo apt-get update")
     os.system("sudo apt-get install openjdk-7-jre")
-    print "\n[STATUS] Updating SYSTEM"
+    print("\n[STATUS] Updating SYSTEM")
 
 #Updating the system
 def system_update():
     os.system("sudo apt-get update")
-    print "[STATUS] Downloading Elasticsearch"
+    print("[STATUS] Downloading Elasticsearch")
 #Install Elasticsearch
 def install_elasticsearch():
-    print "\nDATA: Dowloading key for ELASTICSEARCH......."
+    print(*"\nDATA: Dowloading key for ELASTICSEARCH.......")
     os.system("wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -")
     os.system("echo "deb http://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/Elasticsearch-2/x.list")
     os.system("sudo apt-get update")
@@ -93,21 +92,22 @@ def configure_Kibana():
     with open("/etc/kibana/kibana.yml", "rt") as kibanaConfig:
         with open("/etc/kibanna/kibanna.yml.new", "w")as newKibannaConf:
             for line in kibanaConfig:
-                if "server.host:" in line:
-                    newKibannaConf.write("server.host: "localhost" ")
+                if "server.host:" in line == False:
+                    print("\n[ERROR] Can't properly edit Kibanna config")
                 else:
-                    print "\n[ERROR] Can't properly edit Kibanna config"
+                    newKibannaConf.write("server.host: "localhost" ")
+                        
 os.system("sudo rm -f /etc/kibana/kibana.yml")
 os.system("sudo cp /etc/kibana/kibana.yml.new /etc/kibana/kibana.yml")
 os.system("sudo rm -f /etc/kibana/kibana.yml.new")
 
-print "\n[STATUS]Starting ElasticSearch as a service"
+print("\n[STATUS]Starting ElasticSearch as a service")
 
 #Installing Kibana as a service
 os.system("sudo systemctl restart kibana")
 os.system("sudo systemctl enable kibana")
 os.system("sudo systemctl status kibana")
-print "\n Kibana is now runing on port 5601"
+print ("\n Kibana is now runing on port 5601")
 
 
 
