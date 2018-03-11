@@ -92,7 +92,7 @@ def configure_ElasticSearch():
               #   elif: "elasitcsearch.url" in line:
               #      newElasticConf.write(line.replace('')) 
                 #else something is horrifficly wrong and the file is broken. It must be fixed manually.
-                else "cluster.name" == False:
+                else:
                     #Attempting to write to the confiuration file with the following per line.
                     newElasticConf.write("\nhttp.cors.allow-origin: "/.*/" ")
                     newElasticConf.write("\nhttp.cors.enable: true")
