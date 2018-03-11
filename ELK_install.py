@@ -40,6 +40,7 @@ def get_user_id():
 
 #Seeing if proper version of java is installed
 def install_java_requirements():
+    #Kibana requires java. This will look for the current version of Java and install it. Each function will display the next stop in the installation process.
     print("\n Lookin for the latest version of Java.")
     print ("\n The dashboard depends on it!")
     os.system("sudo java -v")
